@@ -3,9 +3,10 @@ package com;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 public  class Main {
-    private static Map<Character, CostAndNumber> map = new HashMap<>() {{
+    private static Map<Character, CostAndNumber> map = new HashMap<>(33) {{
         put('а', new CostAndNumber(10, 1));
         put('б', new CostAndNumber(3, 3));
         put('в', new CostAndNumber(5, 2));
@@ -42,7 +43,26 @@ public  class Main {
     }};
 
     public static void main(String[] args) {
+        char[] chips = chooseChips(8);
+        System.out.println(Arrays.toString(chips));
+    }
 
+    private static char[] chooseChips(final int count) {
+        char[] chips = new char[count];
+        var random = ThreadLocalRandom.current();
+        for (int i = 0; i < count; ++i) {
+            char word = (char) (random.nextInt(0, 33) + 'а');
+            if (word == 'ё') {
+                ++word;
+            }
+            while (map.get(word).number == 0) {
+                word = (char) (random.nextInt(0, 33) + 'а');
+            }
+            chips[i] = word;
+            CostAndNumber last = map.get(word);
+            map.put(word, new CostAndNumber(last.number - 1, last.cost));
+        }
+        return chips;
     }
 
     private static boolean isEqualWords(String first, String second) {
@@ -53,15 +73,5 @@ public  class Main {
         byte[] secondBytes = second.getBytes();
         Arrays.sort(secondBytes);
         return Arrays.equals(firstBytes, secondBytes);
-    }
-}
-
-class CostAndNumber {
-    public final int number;
-    public final int cost;
-
-    public CostAndNumber(int number, int cost) {
-        this.number = number;
-        this.cost = cost;
     }
 }
