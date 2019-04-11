@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ChipsChooser {
     private static Map<Character, CostAndNumber> words = Words.map;
 
-    public static char[] chooseChips(final int count) {
+    public static char[] choose(final int count) {
         char[] chips = new char[count];
         var random = ThreadLocalRandom.current();
         for (int i = 0; i < count; ++i) {
