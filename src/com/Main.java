@@ -2,46 +2,45 @@ package com;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public  class Main {
     private static Map<Character, CostAndNumber> words = Words.map;
+    private static HashSet<String> dict = new HashSet<>();
 
     public static void main(String[] args) {
-//       todo нужно разобраться со *
+        final int countOfWords = 8;
+        char[] selectedWord = ChipsChooser.choose(countOfWords);
+        System.out.println("Отдельно выбранная буква: " + selectedWord[countOfWords - 1]);
+        System.out.print("Случайно выбранные буквы: ");
+        for (char c : selectedWord) {
+            System.out.print(c + " ");
+        }
+        System.out.println();
+        initializeDict();
+        Set<String> wordsSet = CombinationGenerator.generate(selectedWord);
+        List<String> matchedWords = searchCoincidence(wordsSet);
+        printMax(matchedWords);
+    }
+
+    private static void initializeDict() {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("dictionary.txt"), StandardCharsets.UTF_8))) {
-            final int countOfWords = 8;
-            char[] selectedWord = ChipsChooser.choose(countOfWords);
-            System.out.println("Отдельно выбранная буква: " + selectedWord[countOfWords - 1]);
-            System.out.println(new String(selectedWord));
-            List<String> matchedWords = searchCoincidence(selectedWord, reader, countOfWords);
-            printMax(matchedWords);
+            String string = null;
+            while ((string = reader.readLine()) != null) {
+                dict.add(string);
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
-    private static List<String> searchCoincidence(char[] selectedWord, BufferedReader reader, int countOfWords) throws IOException {
+    private static List<String> searchCoincidence(Set<String> wordsSet) {
         List<String> allMatchedWords = new ArrayList<>();
-        for (int i = 1; i < countOfWords; ++i) {
-            for (int j = 0; j < countOfWords - 1; j += i) {
-                char[] currentSelectWord = (new String(Arrays.copyOfRange(selectedWord, j, j + i)) + selectedWord[countOfWords - 1]).toCharArray();
-                String currentWord = null;
-                while ((currentWord = reader.readLine()) != null) {
-                    char[] charsCurrentWord = currentWord.toCharArray();
-                    if (isEqualWords(currentSelectWord, charsCurrentWord)) {
-                        if (!allMatchedWords.contains(currentWord)) {
-                            System.out.println("Слово из словаря: " + currentWord);
-                            allMatchedWords.add(currentWord);
-                        }
-                    }
-                }
-                reader = new BufferedReader(new InputStreamReader(new FileInputStream("dictionary.txt"), StandardCharsets.UTF_8));
+        for (var word : wordsSet) {
+            if (dict.contains(word) && !allMatchedWords.contains(word)) {
+                System.out.println("Слово из словаря: " + word);
+                allMatchedWords.add(word);
             }
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream("dictionary.txt"), StandardCharsets.UTF_8));
         }
         return allMatchedWords;
     }
@@ -66,15 +65,9 @@ public  class Main {
             }
         }
         if (strings.size() == 1) {
-            System.out.println("Максимальная строка: " + strings.get(0));
+            System.out.println("Слово " + strings.get(0) + " с максимальным значением " + maxValue);
         } else if (strings.size() > 1) {
-            System.out.print("Максимальные строки: " + strings);
+            System.out.println("Слова " + strings + " с максимальным значением " + maxValue);
         }
-    }
-
-    private static boolean isEqualWords(char[] first, char[] second) {
-        Arrays.sort(first);
-        Arrays.sort(second);
-        return Arrays.equals(first, second);
     }
 }
