@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Words {
-    public static Map<Character, CostAndNumber> map = new HashMap<>(32) {{
+    public static Map<Character, CostAndNumber> map = new HashMap<>(33) {{
         put('А', new CostAndNumber(10, 1));
         put('Б', new CostAndNumber(3, 3));
         put('В', new CostAndNumber(5, 2));
