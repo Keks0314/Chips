@@ -10,12 +10,12 @@ public class ChipsChooser {
         char[] chips = new char[count];
         var random = ThreadLocalRandom.current();
         for (int i = 0; i < count; ++i) {
-            char word = (char) (random.nextInt(0, 33) + 'А');
+            char word = (char) (random.nextInt(0, 32) + 'А');
             if (word == 32 + 'А') {
                 word = '*';
             }
             while (words.get(word).number == 0) {
-                word = (char) (random.nextInt(0, 34) + 'А');
+                word = (char) (random.nextInt(0, 32) + 'А');
             }
             chips[i] = word;
             CostAndNumber last = words.get(word);
