@@ -14,25 +14,24 @@ public  class Main {
                 System.out.print(w + "");
             }
             System.out.println();
-            searchCoincidence(selectedWord, reader, countOfWords);
+            searchCoincidence(new char[] { 'В', 'О', 'С', 'П', 'Е', 'Т', 'Ь' }, reader, 7);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private static void searchCoincidence(char[] selectedWord, BufferedReader reader, int countOfWords) throws IOException {
-        for (int i = 0; i < countOfWords - 1; ++i) {
-            char[] currentSelectWord = (new String(Arrays.copyOfRange(selectedWord, 0, i + 1)) + selectedWord[countOfWords - 1]).toCharArray();
-            String currentWord = null;
-            while ((currentWord = reader.readLine()) != null) {
-                char[] charsCurrentWord = currentWord.toCharArray();
-                if (isEqualWords(currentSelectWord, charsCurrentWord)) {
-                    System.out.print("Слово из словаря: ");
-                    for (char c : charsCurrentWord) {
-                        System.out.print(c + "");
+        for (int i = 1; i < countOfWords; ++i) {
+            for (int j = 0; j < countOfWords - 1; j += i) {
+                char[] currentSelectWord = (new String(Arrays.copyOfRange(selectedWord, j, j + i)) + selectedWord[countOfWords - 1]).toCharArray();
+                String currentWord = null;
+                while ((currentWord = reader.readLine()) != null) {
+                    char[] charsCurrentWord = currentWord.toCharArray();
+                    if (isEqualWords(currentSelectWord, charsCurrentWord)) {
+                        System.out.println("Слово из словаря: " + currentWord);
                     }
-                    System.out.println();
                 }
+                reader = new BufferedReader(new InputStreamReader(new FileInputStream("dictionary.txt"), StandardCharsets.UTF_8));
             }
             reader = new BufferedReader(new InputStreamReader(new FileInputStream("dictionary.txt"), StandardCharsets.UTF_8));
         }
