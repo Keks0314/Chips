@@ -17,7 +17,7 @@ public  class Main {
             char[] selectedWord = ChipsChooser.choose(countOfWords);
             System.out.println("Отдельно выбранная буква: " + selectedWord[countOfWords - 1]);
             System.out.println(new String(selectedWord));
-            List<String> matchedWords = searchCoincidence(new char[] { 'В', 'О', 'С', 'П', 'Е', 'Т', 'Ь' }, reader, 7);
+            List<String> matchedWords = searchCoincidence(selectedWord, reader, countOfWords);
             printMax(matchedWords);
         } catch (IOException e) {
             e.printStackTrace();
@@ -33,8 +33,8 @@ public  class Main {
                 while ((currentWord = reader.readLine()) != null) {
                     char[] charsCurrentWord = currentWord.toCharArray();
                     if (isEqualWords(currentSelectWord, charsCurrentWord)) {
-                        System.out.println("Слово из словаря: " + currentWord);
                         if (!allMatchedWords.contains(currentWord)) {
+                            System.out.println("Слово из словаря: " + currentWord);
                             allMatchedWords.add(currentWord);
                         }
                     }
@@ -67,7 +67,7 @@ public  class Main {
         }
         if (strings.size() == 1) {
             System.out.println("Максимальная строка: " + strings.get(0));
-        } else {
+        } else if (strings.size() > 1) {
             System.out.print("Максимальные строки: " + strings);
         }
     }
