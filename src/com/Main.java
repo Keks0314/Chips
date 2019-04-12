@@ -11,12 +11,12 @@ public  class Main {
     public static void main(String[] args) {
         final int countOfWords = 8;
         char[] selectedWord = ChipsChooser.choose(countOfWords);
-        System.out.println("Отдельно выбранная буква: " + selectedWord[countOfWords - 1]);
         System.out.print("Случайно выбранные буквы: ");
-        for (char c : selectedWord) {
-            System.out.print(c + " ");
+        for (int i = 0; i < countOfWords - 1; ++i) {
+            System.out.print(selectedWord[i] + " ");
         }
         System.out.println();
+        System.out.println("Отдельно выбранная буква: " + selectedWord[countOfWords - 1]);
         initializeDict();
         Set<String> wordsSet = CombinationGenerator.generate(selectedWord);
         List<String> matchedWords = searchCoincidence(wordsSet);
@@ -36,10 +36,28 @@ public  class Main {
 
     private static List<String> searchCoincidence(Set<String> wordsSet) {
         List<String> allMatchedWords = new ArrayList<>();
+        int count = 1;
         for (var word : wordsSet) {
-            if (dict.contains(word) && !allMatchedWords.contains(word)) {
-                System.out.println("Слово из словаря: " + word);
+            if (word.contains("*")) {
+                String[] alphabet = new String[32];
+                int index = 0;
+                for (var bucket : words.entrySet()) {
+                    if (bucket.getKey() == '*') {
+                        continue;
+                    }
+                    alphabet[index++] = word.replace('*', bucket.getKey());
+                }
+                for (var newWord : alphabet) {
+                    if (dict.contains(newWord) && !allMatchedWords.contains(newWord)) {
+                        System.out.println(count + ": " + newWord);
+                        allMatchedWords.add(newWord);
+                        ++count;
+                    }
+                }
+            } else if (dict.contains(word) && !allMatchedWords.contains(word)) {
+                System.out.println(count + ": " + word);
                 allMatchedWords.add(word);
+                ++count;
             }
         }
         return allMatchedWords;
