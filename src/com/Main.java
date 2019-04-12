@@ -20,7 +20,7 @@ public  class Main {
         initializeDict();
         Set<String> wordsSet = CombinationGenerator.generate(selectedWord);
         List<String> matchedWords = searchCoincidence(wordsSet);
-        printMax(matchedWords);
+        printMaxWords(matchedWords);
     }
 
     private static void initializeDict() {
@@ -45,7 +45,7 @@ public  class Main {
         return allMatchedWords;
     }
 
-    private static void printMax(List<String> matchedWords) {
+    private static void printMaxWords(List<String> matchedWords) {
         List<String> strings = new ArrayList<>();
         String maxWord = null;
         int maxValue = 0;
@@ -53,7 +53,7 @@ public  class Main {
             char[] charWord = word.toCharArray();
             int value = 0;
             for (char c : charWord) {
-                value += words.get(c).cost;
+                value += words.get(c).getCost();
             }
             if (value > maxValue) {
                 strings.clear();
@@ -68,6 +68,8 @@ public  class Main {
             System.out.println("Слово " + strings.get(0) + " с максимальным значением " + maxValue);
         } else if (strings.size() > 1) {
             System.out.println("Слова " + strings + " с максимальным значением " + maxValue);
+        } else {
+            System.out.println("Невозможно составить слово из заданной последовательности");
         }
     }
 }

@@ -14,12 +14,12 @@ public class ChipsChooser {
             if (word == 32 + 'А') {
                 word = '*';
             }
-            while (words.get(word).number == 0) {
+            while (words.get(word).getNumber() == 0) {
                 word = (char) (random.nextInt(0, 33) + 'А');
             }
             chips[i] = word;
             CostAndNumber last = words.get(word);
-            --last.number;
+            last.setNumber(last.getNumber() - 1);
             words.put(word, last);
         }
         if (chips[count - 1] == '*') {

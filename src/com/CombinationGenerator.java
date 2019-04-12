@@ -10,7 +10,7 @@ public class CombinationGenerator {
     private static StringBuilder sb = new StringBuilder();
 
     public static Set<String> generate(final char[] s) {
-        for (int i = 2; i < s.length + 1; i ++) // s.length + 1
+        for (int i = 2; i < s.length + 1; i ++)
             permuteIteration(s, 0, i);
         HashSet<String> wordsSet = arrList.stream().filter(x -> x.contains(Character.toString(s[s.length - 1]))).collect(Collectors.toCollection(HashSet::new));
         arrList = null;
