@@ -38,15 +38,8 @@ public  class Main {
         List<String> allMatchedWords = new ArrayList<>();
         for (var word : wordsSet) {
             if (word.contains("*")) {
-                String[] alphabet = new String[32];
-                int index = 0;
-                for (var bucket : words.entrySet()) {
-                    if (bucket.getKey() == '*') {
-                        continue;
-                    }
-                    alphabet[index++] = word.replace('*', bucket.getKey());
-                }
-                for (var newWord : alphabet) {
+                List<String> wordsWithoutStar = replaceStar(word);
+                for (var newWord : wordsWithoutStar) {
                     if (dict.contains(newWord) && !allMatchedWords.contains(newWord)) {
                         allMatchedWords.add(newWord);
                     }
@@ -56,6 +49,20 @@ public  class Main {
             }
         }
         return allMatchedWords;
+    }
+
+    private static List<String> replaceStar(String word) {
+        List<String> listWithReplacedStar = new ArrayList<>();
+        String alphabet = "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
+        for (int i = 0; i < alphabet.length(); ++i) {
+            int starIndex = word.indexOf("*");
+            StringBuilder newWord = new StringBuilder();
+            newWord.append(word, 0, starIndex)
+                    .append(alphabet.charAt(i))
+                    .append(word, starIndex + 1, word.length());
+            listWithReplacedStar.add(newWord.toString());
+        }
+        return listWithReplacedStar;
     }
 
     private static void printWords(List<String> matchedWords) {
