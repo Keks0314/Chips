@@ -10,7 +10,8 @@ public  class Main {
 
     public static void main(String[] args) {
         final int countOfWords = 8;
-        char[] selectedWord = ChipsChooser.choose(countOfWords);
+        //char[] selectedWord = ChipsChooser.choose(countOfWords);
+        char[] selectedWord = "В**ПАТЬЕ".toCharArray();
         System.out.print("Случайно выбранные буквы: ");
         for (int i = 0; i < countOfWords - 1; ++i) {
             System.out.print(selectedWord[i] + " ");
@@ -38,7 +39,7 @@ public  class Main {
         List<String> allMatchedWords = new ArrayList<>();
         for (var word : wordsSet) {
             if (word.contains("*")) {
-                List<String> wordsWithoutStar = replaceStar(word);
+                List<String> wordsWithoutStar = getWordWithoutStar(word);
                 for (var newWord : wordsWithoutStar) {
                     if (dict.contains(newWord) && !allMatchedWords.contains(newWord)) {
                         allMatchedWords.add(newWord);
@@ -49,6 +50,32 @@ public  class Main {
             }
         }
         return allMatchedWords;
+    }
+
+    private static List<String> getWordWithoutStar(String word) {
+        List<String> wordsWithoutStar = new ArrayList<>();
+        List<String> wordsWithoutOneStar = replaceStar(word);
+        List<String> wordsWithoutTwoStar = null;
+        List<String> wordsWithoutThreeStar = null;
+        int countOfStars = (int) word.chars().mapToObj(x -> (char) x).filter(x -> x == '*').count();
+        if (countOfStars > 1) {
+            wordsWithoutTwoStar = new ArrayList<>();
+            for (var wordWithoutOneStar : wordsWithoutOneStar) {
+                wordsWithoutTwoStar.addAll(replaceStar(wordWithoutOneStar));
+            }
+            if (countOfStars > 2) {
+                wordsWithoutThreeStar = new ArrayList<>();
+                for (var wordWithoutTwoStar : wordsWithoutTwoStar) {
+                    wordsWithoutThreeStar.addAll(replaceStar(wordWithoutTwoStar));
+                }
+                wordsWithoutStar.addAll(wordsWithoutThreeStar);
+            } else {
+                wordsWithoutStar.addAll(wordsWithoutTwoStar);
+            }
+        } else {
+            wordsWithoutStar.addAll(wordsWithoutOneStar);
+        }
+        return wordsWithoutStar;
     }
 
     private static List<String> replaceStar(String word) {
