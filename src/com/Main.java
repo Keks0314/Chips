@@ -3,47 +3,47 @@ package com;
 import java.util.*;
 
 public  class Main {
-    private static Map<Character, CostAndNumber> words = Words.map;
+    private static Map<Character, AmountAndCost> letters = Letters.container;
 
     public static void main(String[] args) {
-        final int countOfWords = 8;
-        char[] selectedWord = ChipsChooser.choose(countOfWords);
+        final int wordLength = 8;
+        char[] choosedWords = ChipsChooser.choose(wordLength);
         System.out.print("Случайно выбранные буквы: ");
-        for (int i = 0; i < countOfWords - 1; ++i) {
-            System.out.print(selectedWord[i] + " ");
+        for (int i = 0; i < wordLength - 1; ++i) {
+            System.out.print(choosedWords[i] + " ");
         }
-        System.out.println("\nОтдельно выбранная буква: " + selectedWord[countOfWords - 1]);
-        List<String> matchedWords = WordChecker.check(selectedWord);
+        System.out.println("\nОтдельно выбранная буква: " + choosedWords[wordLength - 1]);
+        List<String> matchedWords = WordsChecker.check(choosedWords);
         Collections.sort(matchedWords);
         printWords(matchedWords);
     }
 
     private static void printWords(List<String> matchedWords) {
-        List<String> strings = new ArrayList<>();
+        List<String> words = new ArrayList<>();
         String maxWord = null;
-        int count = 1;
         int maxValue = 0;
+        int wordNumber = 1;
         for (String word : matchedWords) {
             char[] charWord = word.toCharArray();
             int value = 0;
             for (char c : charWord) {
-                value += words.get(c).getCost();
+                value += letters.get(c).getCost();
             }
             if (value > maxValue) {
-                strings.clear();
+                words.clear();
                 maxValue = value;
                 maxWord = word;
-                strings.add(maxWord);
+                words.add(maxWord);
             } else if (value == maxValue) {
-                strings.add(word);
+                words.add(word);
             }
-            System.out.println(count + ": " + word + " - " + value);
-            ++count;
+            System.out.println(wordNumber + ": " + word + " - " + value);
+            ++wordNumber;
         }
-        if (strings.size() == 1) {
-            System.out.println("Слово " + strings.get(0) + " с максимальным значением " + maxValue);
-        } else if (strings.size() > 1) {
-            System.out.println("Слова " + strings + " с максимальным значением " + maxValue);
+        if (words.size() == 1) {
+            System.out.println("Слово " + words.get(0) + " с максимальным значением " + maxValue);
+        } else if (words.size() > 1) {
+            System.out.println("Слова " + words + " с максимальным значением " + maxValue);
         } else {
             System.out.println("Невозможно составить слово из заданной последовательности");
         }
