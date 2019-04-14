@@ -22,11 +22,6 @@ public class ChipsChooser {
             last.setNumber(last.getNumber() - 1);
             words.put(word, last);
         }
-        if (chips[count - 1] == '*') {
-            char tmp = chips[count - 2];
-            chips[count - 2] = chips[count - 1];
-            chips[count - 1] = tmp;
-        }
         return chips;
     }
 }
