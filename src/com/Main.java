@@ -7,13 +7,13 @@ public  class Main {
 
     public static void main(String[] args) {
         final int wordLength = 8;
-        char[] choosedWords = ChipsChooser.choose(wordLength);
+        char[] chosenWord = ChipsChooser.choose(wordLength);
         System.out.print("Случайно выбранные буквы: ");
         for (int i = 0; i < wordLength - 1; ++i) {
-            System.out.print(choosedWords[i] + " ");
+            System.out.print(chosenWord[i] + " ");
         }
-        System.out.println("\nОтдельно выбранная буква: " + choosedWords[wordLength - 1]);
-        List<String> matchedWords = WordsChecker.check(choosedWords);
+        System.out.println("\nОтдельно выбранная буква: " + chosenWord[wordLength - 1]);
+        List<String> matchedWords = WordsChecker.check(chosenWord);
         Collections.sort(matchedWords);
         printWords(matchedWords);
     }

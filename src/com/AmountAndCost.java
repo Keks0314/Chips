@@ -1,6 +1,6 @@
 package com;
 
-class AmountAndCost {
+public class AmountAndCost {
     private int amount;
     private int cost;
 
